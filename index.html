@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Trivia Jeopardy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid #fff;
+      padding: 20px;
+      cursor: pointer;
+      background: #3e3e6c;
+    }
+    td.answered {
+      background: #222;
+      color: #777;
+      pointer-events: none;
+    }
+    .scores {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 20px;
+    }
+    .team {
+      background: #333;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .team button {
+      margin: 5px;
+      padding: 5px 10px;
+    }
+    #questionModal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #282847;
+      padding: 30px;
+      border-radius: 10px;
+      display: none;
+    }
+    #finalJeopardy {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Code Trivia Jeopardy</h1>
+
+  <table>
+    <tr>
+      <th>Git</th>
+      <th>HTML</th>
+      <th>JS Objects</th>
+      <th>JS Arrays</th>
+      <th>Functions</th>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'What is the command to create a new branch in git?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What does HTML stand for?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What keyword is used to create an object in JS?', 100)">100</td>
+      <td onclick="showQuestion(this, 'How do you access the first item in an array?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What keyword defines a function?', 100)">100</td>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'How do you switch to another branch in git?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What tag creates a clickable link?', 200)">200</td>
+      <td onclick="showQuestion(this, 'How do you access a value in an object?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What array method adds to the end of an array?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What does return do in a function?', 200)">200</td>
+    </tr>
+  </table>
+
+  <div class="scores">
+    <div class="team">
+      <h2>Team A: <span id="scoreA">0</span></h2>
+      <button onclick="addPoints('A', 100)">+100</button>
+      <button onclick="addPoints('A', -100)">-100</button>
+    </div>
+    <div class="team">
+      <h2>Team B: <span id="scoreB">0</span></h2>
+      <button onclick="addPoints('B', 100)">+100</button>
+      <button onclick="addPoints('B', -100)">-100</button>
+    </div>
+  </div>
+
+  <div id="questionModal">
+    <p id="questionText"></p>
+    <button onclick="closeQuestion()">Close</button>
+  </div>
+
+  <div id="finalJeopardy">
+    <h2>Final Jeopardy</h2>
+    <button onclick="showFinal()">Reveal Final Question</button>
+    <div id="finalQuestion" style="display: none; margin-top: 10px;">
+      <p>Final Question: What is the difference between == and === in JavaScript?</p>
+    </div>
+  </div>
+
+  <script>
+    let scoreA = 0;
+    let scoreB = 0;
+
+    function showQuestion(cell, question, value) {
+      document.getElementById("questionText").textContent = question;
+      document.getElementById("questionModal").style.display = "block";
+      cell.classList.add("answered");
+      cell.onclick = null;
+    }
+
+    function closeQuestion() {
+      document.getElementById("questionModal").style.display = "none";
+    }
+
+    function addPoints(team, points) {
+      if (team === 'A') {
+        scoreA += points;
+        document.getElementById("scoreA").textContent = scoreA;
+      } else {
+        scoreB += points;
+        document.getElementById("scoreB").textContent = scoreB;
+      }
+    }
+
+    function showFinal() {
+      document.getElementById("finalQuestion").style.display = "block";
+    }
+  </script>
+</body>
+</html>
