@@ -18,7 +18,7 @@
       margin: 20px auto;
       border-collapse: collapse;
     }
-    td {
+    td, th {
       border: 1px solid #fff;
       padding: 20px;
       cursor: pointer;
@@ -53,6 +53,7 @@
       padding: 30px;
       border-radius: 10px;
       display: none;
+      max-width: 90%;
     }
     #finalJeopardy {
       margin-top: 40px;
@@ -77,8 +78,69 @@
 <body>
   <h1>Code Trivia Jeopardy</h1>
 
-  <!-- [table unchanged] -->
-  <!-- [score sections unchanged] -->
+  <table>
+    <tr>
+      <th>Git</th>
+      <th>HTML</th>
+      <th>JS Objects</th>
+      <th>JS Arrays</th>
+      <th>Functions</th>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'What is the command to create a new branch in git?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What does HTML stand for?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What keyword is used to create an object in JS?', 100)">100</td>
+      <td onclick="showQuestion(this, 'How do you access the first item in an array?', 100)">100</td>
+      <td onclick="showQuestion(this, 'What keyword defines a function?', 100)">100</td>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'How do you switch to another branch in git?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What tag creates a clickable link?', 200)">200</td>
+      <td onclick="showQuestion(this, 'How do you access a value in an object?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What array method adds to the end of an array?', 200)">200</td>
+      <td onclick="showQuestion(this, 'What does return do in a function?', 200)">200</td>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'What is the command to view all branches?', 300)">300</td>
+      <td onclick="showQuestion(this, 'Which HTML element is used for large headings?', 300)">300</td>
+      <td onclick="showQuestion(this, 'How do you add a new key/value to an object?', 300)">300</td>
+      <td onclick="showQuestion(this, 'How do you remove the last item from an array?', 300)">300</td>
+      <td onclick="showQuestion(this, 'Can functions be passed as arguments?', 300)">300</td>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'How do you stash changes in git?', 400)">400</td>
+      <td onclick="showQuestion(this, 'What does the <form> tag do?', 400)">400</td>
+      <td onclick="showQuestion(this, 'What does Object.keys() return?', 400)">400</td>
+      <td onclick="showQuestion(this, 'What method returns the index of an item?', 400)">400</td>
+      <td onclick="showQuestion(this, 'What is a function expression?', 400)">400</td>
+    </tr>
+    <tr>
+      <td onclick="showQuestion(this, 'How do you undo the last commit in git?', 500)">500</td>
+      <td onclick="showQuestion(this, 'What is semantic HTML?', 500)">500</td>
+      <td onclick="showQuestion(this, 'What is the purpose of JSON.stringify()?', 500)">500</td>
+      <td onclick="showQuestion(this, 'What method combines arrays?', 500)">500</td>
+      <td onclick="showQuestion(this, 'What is a higher-order function?', 500)">500</td>
+    </tr>
+  </table>
+
+  <div id="questionModal">
+    <p id="questionText"></p>
+    <p id="timer">Time left: <span id="timeLeft">10</span>s</p>
+    <button onclick="closeQuestion()">Close</button>
+  </div>
+
+  <div class="scores">
+    <div class="team">
+      <h2>Team A: <span id="scoreA">0</span></h2>
+      <button onclick="addPoints('A', 100)">+100</button>
+      <button onclick="addPoints('A', -100)">-100</button>
+    </div>
+    <div class="team">
+      <h2>Team B: <span id="scoreB">0</span></h2>
+      <button onclick="addPoints('B', 100)">+100</button>
+      <button onclick="addPoints('B', -100)">-100</button>
+    </div>
+  </div>
 
   <div id="finalJeopardy">
     <h2>Final Jeopardy</h2>
@@ -104,7 +166,8 @@
     </div>
   </div>
 
-  <!-- [audio elements unchanged] -->
+  <audio id="tickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-tick-tock-clock-timer-1046.mp3"></audio>
+  <audio id="dingSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-show-win-siren-943.mp3"></audio>
 
   <script>
     let scoreA = 0;
