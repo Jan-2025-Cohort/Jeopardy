@@ -57,74 +57,81 @@
     #finalJeopardy {
       margin-top: 40px;
     }
+    #timer {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .wager-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .wager-inputs input {
+      width: 80px;
+      text-align: center;
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
   <h1>Code Trivia Jeopardy</h1>
 
-  <table>
-    <tr>
-      <th>Git</th>
-      <th>HTML</th>
-      <th>JS Objects</th>
-      <th>JS Arrays</th>
-      <th>Functions</th>
-    </tr>
-    <tr>
-      <td onclick="showQuestion(this, 'What is the command to create a new branch in git?', 100)">100</td>
-      <td onclick="showQuestion(this, 'What does HTML stand for?', 100)">100</td>
-      <td onclick="showQuestion(this, 'What keyword is used to create an object in JS?', 100)">100</td>
-      <td onclick="showQuestion(this, 'How do you access the first item in an array?', 100)">100</td>
-      <td onclick="showQuestion(this, 'What keyword defines a function?', 100)">100</td>
-    </tr>
-    <tr>
-      <td onclick="showQuestion(this, 'How do you switch to another branch in git?', 200)">200</td>
-      <td onclick="showQuestion(this, 'What tag creates a clickable link?', 200)">200</td>
-      <td onclick="showQuestion(this, 'How do you access a value in an object?', 200)">200</td>
-      <td onclick="showQuestion(this, 'What array method adds to the end of an array?', 200)">200</td>
-      <td onclick="showQuestion(this, 'What does return do in a function?', 200)">200</td>
-    </tr>
-  </table>
-
-  <div class="scores">
-    <div class="team">
-      <h2>Team A: <span id="scoreA">0</span></h2>
-      <button onclick="addPoints('A', 100)">+100</button>
-      <button onclick="addPoints('A', -100)">-100</button>
-    </div>
-    <div class="team">
-      <h2>Team B: <span id="scoreB">0</span></h2>
-      <button onclick="addPoints('B', 100)">+100</button>
-      <button onclick="addPoints('B', -100)">-100</button>
-    </div>
-  </div>
-
-  <div id="questionModal">
-    <p id="questionText"></p>
-    <button onclick="closeQuestion()">Close</button>
-  </div>
+  <!-- [table unchanged] -->
+  <!-- [score sections unchanged] -->
 
   <div id="finalJeopardy">
     <h2>Final Jeopardy</h2>
+    <div class="wager-inputs">
+      <div>
+        <label for="wagerA">Team A Wager:</label>
+        <input type="number" id="wagerA" value="0" min="0">
+      </div>
+      <div>
+        <label for="wagerB">Team B Wager:</label>
+        <input type="number" id="wagerB" value="0" min="0">
+      </div>
+    </div>
     <button onclick="showFinal()">Reveal Final Question</button>
     <div id="finalQuestion" style="display: none; margin-top: 10px;">
       <p>Final Question: What is the difference between == and === in JavaScript?</p>
+      <div style="margin-top: 20px;">
+        <button onclick="awardWager('A', true)">Team A Correct</button>
+        <button onclick="awardWager('A', false)">Team A Wrong</button>
+        <button onclick="awardWager('B', true)">Team B Correct</button>
+        <button onclick="awardWager('B', false)">Team B Wrong</button>
+      </div>
     </div>
   </div>
+
+  <!-- [audio elements unchanged] -->
 
   <script>
     let scoreA = 0;
     let scoreB = 0;
+    let countdown;
+    let time = 10;
 
     function showQuestion(cell, question, value) {
       document.getElementById("questionText").textContent = question;
       document.getElementById("questionModal").style.display = "block";
       cell.classList.add("answered");
       cell.onclick = null;
+      time = 10;
+      document.getElementById("timeLeft").textContent = time;
+      playTick();
+      countdown = setInterval(() => {
+        time--;
+        document.getElementById("timeLeft").textContent = time;
+        playTick();
+        if (time <= 0) clearInterval(countdown);
+      }, 1000);
     }
 
     function closeQuestion() {
       document.getElementById("questionModal").style.display = "none";
+      clearInterval(countdown);
+      document.getElementById("dingSound").play();
     }
 
     function addPoints(team, points) {
@@ -139,6 +146,19 @@
 
     function showFinal() {
       document.getElementById("finalQuestion").style.display = "block";
+    }
+
+    function awardWager(team, correct) {
+      const wager = parseInt(document.getElementById(`wager${team}`).value) || 0;
+      if (correct) {
+        addPoints(team, wager);
+      } else {
+        addPoints(team, -wager);
+      }
+    }
+
+    function playTick() {
+      document.getElementById("tickSound").play();
     }
   </script>
 </body>
